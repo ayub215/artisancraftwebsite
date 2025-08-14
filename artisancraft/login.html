@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ArtisanCraft - Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #FDF6F0, #D9C8A9, #E6B89C, #FDF6F0);
+      background-size: 400% 400%;
+      animation: gradientFlow 20s ease infinite;
+      position: relative;
+      z-index: -2;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle, rgba(160,82,45,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: drift 60s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-100px, -100px); }
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .branding {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      font-size: 28px;
+      font-weight: bold;
+      z-index: 999;
+      background-color: rgba(255, 250, 245, 0.8);
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+
+    .branding a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #5e3d34;
+    }
+
+    .branding img {
+      height: 50px;
+      width: auto;
+    }
+
+    .login-section {
+      flex: 1;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 50px;
+      opacity: 0;
+      animation: slideInRight 0.6s ease-out forwards;
+      animation-delay: 0.3s;
+      backdrop-filter: blur(3px);
+      border-left: 2px solid #e6b89c;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-panel {
+      flex: 1;
+      background: url('signuppic.jpeg') center/cover no-repeat;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-shadow: 1px 1px 3px #000;
+      transform: translateX(-100%);
+      animation: slideInLeft 0.6s ease-out forwards;
+    }
+
+    @keyframes slideInLeft {
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    p {
+      color: #7b5b57;
+      margin: 10px 0 30px;
+    }
+
+    .input-field {
+      width: 100%;
+      max-width: 350px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #e2d6cd;
+      border-radius: 25px;
+      background-color: #f3ece7;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .input-field:focus {
+      border-color: #d96c4f;
+      box-shadow: 0 0 5px rgba(217, 108, 79, 0.5);
+      outline: none;
+    }
+
+    .sign-in-btn {
+      width: 100%;
+      max-width: 350px;
+      padding: 12px;
+      background-color: #d96c4f;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(217, 108, 79, 0.3);
+    }
+
+    .sign-in-btn:hover {
+      transform: scale(1.05);
+      background-color: #b55438;
+    }
+
+    .signup-panel h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .signup-panel p {
+      text-align: center;
+      max-width: 250px;
+      margin-bottom: 30px;
+    }
+
+    .pushable {
+      position: relative;
+      background: transparent;
+      padding: 0px;
+      border: none;
+      cursor: pointer;
+      outline-offset: 4px;
+      transition: filter 250ms;
+    }
+
+    .shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(244, 197, 66, 0.6);
+      border-radius: 8px;
+      filter: blur(2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .edge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 8px;
+      background: linear-gradient(to right, #d96c4f 0%, #f4c542 100%);
+    }
+
+    .front {
+      display: block;
+      position: relative;
+      border-radius: 8px;
+      background: #d96c4f;
+      padding: 16px 32px;
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 1rem;
+      transform: translateY(-4px);
+      transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    }
+
+    .pushable:hover {
+      filter: brightness(110%);
+    }
+
+    .pushable:hover .front {
+      transform: translateY(-6px);
+      transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    }
+
+    .pushable:active .front {
+      transform: translateY(-2px);
+      transition: transform 34ms;
+    }
+
+    .pushable:hover .shadow {
+      transform: translateY(4px);
+      transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    }
+
+    .pushable:active .shadow {
+      transform: translateY(1px);
+      transition: transform 34ms;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .signup-panel {
+        order: -1;
+        padding: 20px;
+      }
+
+      .branding {
+        font-size: 22px;
+        top: 20px;
+        left: 20px;
+      }
+
+      .branding img {
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="branding">
+    <a href="index.html">
+      <img src="logog.jpeg" alt="Logo" />
+      <span>ArtisanCraft</span>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="login-section">
+      <h1>Login to Your Account</h1>
+      <p>Welcome back to ArtisanCraft</p>
+      <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 600; color: #5e3d34; letter-spacing: 0.5px; text-align: left;">Select your account type:</h3>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; max-width: 350px;">
+        <button type="button" id="btnCustomer" style="flex:1; padding:10px; border-radius:20px; border:1px solid #ccc; background:#fffaf5; cursor:pointer; font-weight:bold;">Customer</button>
+        <button type="button" id="btnArtisan" style="flex:1; padding:10px; border-radius:20px; border:1px solid #ccc; background:#f3ece7; cursor:pointer;">Artisan</button>
+        <button type="button" id="btnAdmin" style="flex:1; padding:10px; border-radius:20px; border:1px solid #ccc; background:#f3ece7; cursor:pointer;">Admin</button>
+      </div>
+
+      <form id="loginForm" method="POST" action="loginphp.php" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <input type="email" class="input-field" name="email" placeholder="Email" required />
+        <input type="password" class="input-field" name="password" placeholder="Password" required />
+        <input type="hidden" name="usertype" id="usertype" value="customer" />
+        <button type="submit" class="sign-in-btn">Sign In</button>
+      </form>
+    </div>
+
+    <div class="signup-panel">
+      <h2>New Here?</h2>
+      <p style="color: #fff; font-weight: bold;">Sign up and discover a great amount of new opportunities!</p>
+      <button class="pushable" onclick="window.location.href='signup.html'">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">Sign Up</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const btnCustomer = document.getElementById("btnCustomer");
+    const btnArtisan = document.getElementById("btnArtisan");
+    const btnAdmin = document.getElementById("btnAdmin");
+    const usertypeInput = document.getElementById("usertype");
+
+    function setActive(button, type) {
+      [btnCustomer, btnArtisan, btnAdmin].forEach(btn => {
+        btn.style.background = "#f3ece7";
+        btn.style.color = "#000";
+        btn.style.fontWeight = "normal";
+      });
+      button.style.background = "#fffaf5";
+      button.style.color = "#d96c4f";
+      button.style.fontWeight = "bold";
+      usertypeInput.value = type;
+    }
+
+    btnCustomer.addEventListener("click", () => setActive(btnCustomer, "customer"));
+    btnArtisan.addEventListener("click", () => setActive(btnArtisan, "artisan"));
+    btnAdmin.addEventListener("click", () => setActive(btnAdmin, "admin"));
+
+    setActive(btnCustomer, "customer");
+  </script>
+</body>
+</html>
